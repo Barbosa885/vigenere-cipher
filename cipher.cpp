@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
+#include "vigenere.h"
+#include <cstdlib>
 
 using namespace std;
+
+void clearTerminal()
+{
+  system("cls");
+  system("clear");
+}
 
 string cipher(string text, string key)
 {
@@ -79,13 +87,14 @@ string decipher(string cipherText, string key)
 
 int main()
 {
-  string opcao;
+  string option;
   cout << "Escolha uma opção: " << endl;
   cout << "1 - Cifrar" << endl;
   cout << "2 - Decifrar" << endl;
-  getline(cin, opcao);
+  getline(cin, option);
+  clearTerminal();
 
-  if (opcao == "1")
+  if (option == "1")
   {
     string text, key;
     cout << "Escreva o texto à ser codificado: ";
@@ -95,18 +104,35 @@ int main()
     string cipherText = cipher(text, key);
     cout << "Texto cifrado: " << cipherText << endl;
   }
-  else if (opcao == "2")
+  else if (option == "2")
   {
-    string cipherText, key;
-    cout << "Escreva o texto cifrado: ";
-    getline(cin, cipherText);
-    cout << "Escreva uma chave: ";
-    getline(cin, key);
-    string decipherText = decipher(cipherText, key);
-    cout << "Texto decifrado: " << decipherText << endl;
+    cout << "Sabe a chave para a decodificação? (y/n) " << endl;
+
+    getline(cin, option);
+    clearTerminal();
+    if (option == "y" || option == "Y")
+    {
+      string cipherText, key;
+      cout << "Escreva o texto cifrado: ";
+      getline(cin, cipherText);
+      cout << "Escreva a chave: ";
+      getline(cin, key);
+      string decipherText = decipher(cipherText, key);
+      cout << "Texto decifrado: " << decipherText << endl;
+    }
+
+    else if (option == "n" || option == "N") {
+      string cipherText;
+      cout << "Escreva o texto cifrado: ";
+      getline(cin, cipherText);
+      string decipherText = frequencyAnalysis(cipherText);
+      cout << "Texto decifrado: " << decipherText << endl;
+    } 
+    else {
+      cout << "Opção inválida!" << endl;
+    }
   }
-  else
-  {
+  else {
     cout << "Opção inválida!" << endl;
   }
 
