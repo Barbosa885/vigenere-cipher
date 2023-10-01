@@ -7,13 +7,13 @@ string cipher(string text, string key)
 {
   string cipherText = "";
   
-  while(key.length() < text.length())
+  while(key.size() < text.size())
   {
     key += key;
   }
 
   int j = 0;
-  for(int i = 0; i < text.length(); i++)
+  for(string::size_type i = 0; i < text.size(); i++)
   {
     char letterText = text[i];
 
@@ -29,7 +29,7 @@ string cipher(string text, string key)
       continue;
     }
 
-    char letterKey = key[j % key.length()];
+    char letterKey = key[j % key.size()];
 
     letterText = toupper(letterText);
     letterKey = toupper(letterKey);
@@ -47,7 +47,7 @@ string decipher(string cipherText, string key)
 {
   string decipherText = "";
   int j = 0;
-  for(int i = 0; i < cipherText.length(); i++)
+  for(string::size_type i = 0; i < cipherText.size(); i++)
   {
     char letterCipher = cipherText[i];
 
@@ -63,7 +63,7 @@ string decipher(string cipherText, string key)
       continue;
     }
 
-    char letterKey = key[j % key.length()];
+    char letterKey = key[j % key.size()];
 
     letterCipher = toupper(letterCipher);
     letterKey = toupper(letterKey);
