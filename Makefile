@@ -4,7 +4,7 @@ CFLAGS = -Wall -g
 
 # Alvo principal que depende de cipher.o
 main: cipher.o
-	$(CC) $(CFLAGS) -o main cipher.o 
+	$(CC) $(CFLAGS) -o run cipher.o 
 
 # Alvo para o arquivo objeto cipher.o
 cipher.o: cipher.cpp
