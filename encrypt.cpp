@@ -1,30 +1,51 @@
 #include <iostream>
 #include <string>
-#include "vigenere.h"
 
 using namespace std;
 
-string encryptVigenere(std::string text, std::string key)
+string cipher(string text, string key)
 {
-  string encryptedText = "";
-  int textLength = text.length();
-  int keyLength = key.length();
-
-  for (int i = 0; i < textLength; i++)
+  string cipherText = "";
+  
+  while(key.length() < text.length())
   {
-    char textChar = text[i];
-    char keyChar = key[i % keyLength];
-    char encryptedChar;
-
-    if (isalpha(textChar))
-    {
-      char base = islower(textChar) ? 'a' : 'A';
-      encryptedChar = ((textChar - base + keyChar - 'A') % 26) + base;
-    } else 
-    {
-      encryptedChar = textChar;
-    }
-  encryptedText += encryptedChar;
+    key += key;
   }
-  return encryptedText;
+
+  int j = 0;
+  for(int i = 0; i < text.length(); i++)
+  {
+    char letterText = text[i];
+
+    if (letterText == ' ')
+    {
+      cipherText += ' ';
+      continue;
+    }
+
+    char letterKey = key[j % key.length()];
+
+    letterText = toupper(letterText);
+    letterKey = toupper(letterKey);
+
+    char letterCipher = ((letterText - 'A') + (letterKey - 'A')) % 26 + 'A';
+
+    cipherText += letterCipher;
+
+    j++;
+  }
+  return cipherText;
+}
+
+int main()
+{
+  string text, key;
+  cout << "Enter the text to be encrypted: ";
+  getline(cin, text);
+  cout << "Enter the key: ";
+  getline(cin, key);
+
+  string cipherText = cipher(text, key);
+  cout << "Cipher Text: " << cipherText << endl;
+  return 0;
 }
