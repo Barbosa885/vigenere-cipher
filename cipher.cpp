@@ -1,7 +1,11 @@
+#include <algorithm>
+#include <cmath>
 #include <iostream>
+#include <map>
 #include <string>
 #include "vigenere.h"
 #include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -13,19 +17,22 @@ void clearTerminal()
 
 string cipher(string text, string key)
 {
+  // Variável que armazena o texto cifrado
   string cipherText = "";
-  
+
+  // Repete a chave até que ela tenha o mesmo tamanho do texto
   while(key.size() < text.size())
   {
     key += key;
   }
 
+  // Percorre o texto e a chave
   int j = 0;
   for(string::size_type i = 0; i < text.size(); i++)
   {
     char letterText = text[i];
 
-    // Ignora caracteres que não são letras
+    // Ignora caracteres que não são letras do alfabeto
     if (!isalpha(letterText))
     {
       continue;
@@ -34,18 +41,29 @@ string cipher(string text, string key)
     // Ignora espaços no texto plano
     if (letterText == ' ')
     {
+      cipherText += letterText;
       continue;
     }
 
+    // Ignora caracteres especiais
+    if (letterText == '!' || letterText == '?' || letterText == '.' || letterText == ',')
+    {
+      cipherText += letterText;
+      continue;
+    }
+
+    // Pega a letra da chave 
     char letterKey = key[j % key.size()];
 
+    // Transforma as letras em maiúsculas
     letterText = toupper(letterText);
     letterKey = toupper(letterKey);
 
+    // Cifra a letra do texto com a letra da chave e armazena na variável cipherText
     char letterCipher = ((letterText - 'A') + (letterKey - 'A')) % 26 + 'A';
-
     cipherText += letterCipher;
 
+    // Incrementa o contador da chave para pegar a próxima letra
     j++;
   }
   return cipherText;
@@ -53,7 +71,10 @@ string cipher(string text, string key)
 
 string decipher(string cipherText, string key)
 {
+  // Variável que armazena o texto decifrado
   string decipherText = "";
+
+  // Repete a chave até que ela tenha o mesmo tamanho do texto
   int j = 0;
   for(string::size_type i = 0; i < cipherText.size(); i++)
   {
@@ -71,15 +92,25 @@ string decipher(string cipherText, string key)
       continue;
     }
 
+    // Ignora caracteres especiais
+    if (letterCipher == '!' || letterCipher == '?' || letterCipher == '.' || letterCipher == ',')
+    {
+      cipherText += letterCipher;
+      continue;
+    }
+
+    // Pega a letra da chave 
     char letterKey = key[j % key.size()];
 
+    // Transforma as letras em maiúsculas
     letterCipher = toupper(letterCipher);
     letterKey = toupper(letterKey);
 
+    // Decifra a letra do texto com a letra da chave e armazena na variável decipherText
     char letterDecipher = ((letterCipher - letterKey  + 26) % 26) + 'A';
-
     decipherText += letterDecipher;
 
+    // Incrementa o contador da chave para pegar a próxima letra
     j++;
   }
   return decipherText;
@@ -90,7 +121,7 @@ int main()
   string option;
   cout << "Escolha uma opção: " << endl;
   cout << "1 - Cifrar" << endl;
-  cout << "2 - Decifrar" << endl;
+  cout << "2 - Decifrar (com quebra de senha)" << endl;
   getline(cin, option);
   clearTerminal();
 
@@ -121,11 +152,14 @@ int main()
       cout << "Texto decifrado: " << decipherText << endl;
     }
 
-    else if (option == "n" || option == "N") {
+    else if (option == "n" || option == "N") 
+    {
       string cipherText;
       cout << "Escreva o texto cifrado: ";
       getline(cin, cipherText);
-      string decipherText = frequencyAnalysis(cipherText);
+      string key = quebrar_senha_kasiski(cipherText);
+      cout << "Chave utilizada: " << key << endl;
+      string decipherText = decipher(cipherText, key);
       cout << "Texto decifrado: " << decipherText << endl;
     } 
     else {
@@ -138,3 +172,4 @@ int main()
 
   return 0;
 }
+

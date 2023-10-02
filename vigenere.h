@@ -1,6 +1,13 @@
-#pragma once
+#ifndef VIGENERE_H
+#define VIGENERE_H
+
+#include <map>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-string frequencyAnalysis(string cipherText);
+string quebrar_senha_kasiski(const string &texto);
+
+#endif
+
