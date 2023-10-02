@@ -157,10 +157,6 @@ int main()
       string cipherText;
       cout << "Escreva o texto cifrado: ";
       getline(cin, cipherText);
-      string key = quebrar_senha_kasiski(cipherText);
-      cout << "Chave utilizada: " << key << endl;
-      string decipherText = decipher(cipherText, key);
-      cout << "Texto decifrado: " << decipherText << endl;
     } 
     else {
       cout << "Opção inválida!" << endl;
