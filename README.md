@@ -8,7 +8,7 @@ O programa começa solicitando ao usuário que escolha uma opção: cifrar ou de
 
 ## Como Rodar
 
-Para rodar o programa, você precisa ter o g++ e o `make` instalados no seu sistema. Depois disso, você pode simplesmente usar o comando `make` para compilar e `./run` para executar o programa.
+Para rodar o programa, você precisa ter o g++ e o `make` instalados no seu sistema. Depois disso, você pode simplesmente usar o comando `make -B` para compilar e executar o programa.
 
 ## Estrutura do Projeto
 
