@@ -111,12 +111,13 @@ string decipher(string cipherText, string key)
   }
   return decipherText;
 }
+
 int main()
 {
   string option;
   cout << "Escolha uma opção: " << endl;
   cout << "1 - Cifrar" << endl;
-  cout << "2 - Decifrar (com quebra de senha)" << endl;
+  cout << "2 - Decifrar" << endl;
   getline(cin, option);
   clearTerminal();
 
