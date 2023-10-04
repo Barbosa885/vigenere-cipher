@@ -1,20 +1,23 @@
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <iostream>
 #include <map>
 #include <string>
-#include "vigenere.h"
-#include <cstdlib>
 #include <vector>
 
 using namespace std;
 
+// Função para limpar o terminal
 void clearTerminal()
 {
+  // Limpa o terminal no Windows
   system("cls");
+  // Limpa o terminal no Unix/Linux
   system("clear");
 }
 
+// Função para cifrar o texto usando a cifra de Vigenere
 string cipher(string text, string key)
 {
   // Variável que armazena o texto cifrado
@@ -32,43 +35,40 @@ string cipher(string text, string key)
   {
     char letterText = text[i];
 
-    // Ignora caracteres que não são letras do alfabeto
-    if (!isalpha(letterText))
+    if(isalpha(letterText))
     {
-      continue;
-    }
+      // Pega a letra da chave 
+      char letterKey = key[j % key.size()];
 
-    // Ignora espaços no texto plano
-    if (letterText == ' ')
+      // Cifra a letra do texto com a letra da chave e armazena na variável cipherText
+      char letterCipher;
+      if(isupper(letterText))
+      {
+        // Cifra a letra maiúscula
+        letterCipher = ((letterText - 'A') + (letterKey - 'A')) % 26 + 'A';
+      } 
+      else if(islower(letterText))
+      {
+        // Cifra a letra minúscula
+        letterCipher = ((letterText - 'a') + (letterKey - 'a')) % 26 + 'a';
+      } 
+
+      // Adiciona a letra cifrada ao texto cifrado
+      cipherText += letterCipher;
+      // Incrementa o contador da chave para pegar a próxima letra
+      j++;
+    }
+    else
     {
+      // Copia o caractere que não é uma letra para o texto cifrado
       cipherText += letterText;
-      continue;
     }
-
-    // Ignora caracteres especiais
-    if (letterText == '!' || letterText == '?' || letterText == '.' || letterText == ',')
-    {
-      cipherText += letterText;
-      continue;
-    }
-
-    // Pega a letra da chave 
-    char letterKey = key[j % key.size()];
-
-    // Transforma as letras em maiúsculas
-    letterText = toupper(letterText);
-    letterKey = toupper(letterKey);
-
-    // Cifra a letra do texto com a letra da chave e armazena na variável cipherText
-    char letterCipher = ((letterText - 'A') + (letterKey - 'A')) % 26 + 'A';
-    cipherText += letterCipher;
-
-    // Incrementa o contador da chave para pegar a próxima letra
-    j++;
   }
+
   return cipherText;
 }
 
+// Função para decifrar o texto usando a cifra de Vigenere
 string decipher(string cipherText, string key)
 {
   // Variável que armazena o texto decifrado
@@ -79,43 +79,38 @@ string decipher(string cipherText, string key)
   for(string::size_type i = 0; i < cipherText.size(); i++)
   {
     char letterCipher = cipherText[i];
-
-    // Ignora caracteres que não são letras
-    if (!isalpha(letterCipher))
+    
+    if(isalpha(letterCipher))
     {
-      continue;
-    }
+      // Pega a letra da chave 
+      char letterKey = key[j % key.size()];
 
-    // Ignora espaços no texto cifrado
-    if (letterCipher == ' ')
+      // Decifra a letra do texto com a letra da chave e armazena na variável decipherText
+      char letterDecipher;
+      if(isupper(letterCipher))
+      {
+        // Decifra a letra maiúscula
+        letterDecipher = ((letterCipher - letterKey  + 26) % 26) + 'A';
+      }
+      else if(islower(letterCipher))
+      {
+        // Decifra a letra minúscula
+        letterDecipher = ((letterCipher - letterKey  + 26) % 26) + 'a';
+      }
+
+      // Adiciona a letra decifrada ao texto decifrado
+      decipherText += letterDecipher;
+      // Incrementa o contador da chave para pegar a próxima letra
+      j++;
+    }
+    else
     {
-      continue;
+      // Copia o caractere que não é uma letra para o texto decifrado
+      decipherText += letterCipher;
     }
-
-    // Ignora caracteres especiais
-    if (letterCipher == '!' || letterCipher == '?' || letterCipher == '.' || letterCipher == ',')
-    {
-      cipherText += letterCipher;
-      continue;
-    }
-
-    // Pega a letra da chave 
-    char letterKey = key[j % key.size()];
-
-    // Transforma as letras em maiúsculas
-    letterCipher = toupper(letterCipher);
-    letterKey = toupper(letterKey);
-
-    // Decifra a letra do texto com a letra da chave e armazena na variável decipherText
-    char letterDecipher = ((letterCipher - letterKey  + 26) % 26) + 'A';
-    decipherText += letterDecipher;
-
-    // Incrementa o contador da chave para pegar a próxima letra
-    j++;
   }
   return decipherText;
 }
-
 int main()
 {
   string option;
